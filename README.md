@@ -31,8 +31,8 @@ The Rock, Paper, Scissors betting game is a game where you can bet crypto to cha
  
 
 
-## How to test this project:
-NOTE: Tests can only be run on the Polygon Testnet as you need access to the Chainlink VRF Oracle
+## How to test this project: NOTE: Tests can only be run on the Polygon Testnet as you need access to the Chainlink VRF Oracle
+
 How to run the project:
      1. Git clone on the blockchain-game directory
             - Install Dependencies:
