@@ -1,151 +1,169 @@
 import logo from './logo.svg';
 import './App.css';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
-import {parseEther, formatEther } from '@ethersproject/units';
+import { parseEther, formatEther } from '@ethersproject/units';
 import RockPaperScissorsContract from "./contracts/RockPaperScissorsContract.json";
 
 function App() {
 
-const AuctionContractAddress = '0x683D2dd6cA20F8B015786Fd14e2333d052fa2DfA';
-const emptyAddress = '0x0000000000000000000000000000000000000000';
-  
-  
-  const [userChoice, setUserChoice] = useState('rock');
-  const [computerChoice, setComputerChoice] = useState('rock');
+  const RockPaperScissorsContractAddress = '0x683D2dd6cA20F8B015786Fd14e2333d052fa2DfA';
+
+
+  const [userChoice, setUserChoice] = useState('');
+  const [computerChoice, setComputerChoice] = useState('');
   const [userBet, setUserBet] = useState(0);
-  const [amount, setAmount] = useState(0);
   const [userWinnings, setUserWinnings] = useState(0);
   const [result, setResult] = useState('Let\'s see who wins');
   const [gameOver, setGameOver] = useState(false);
   const [account, setAccount] = useState('');
 
 
-    //Setups up new Ethereum provider and returns an interface for interacting with the smart contract
-    const initializeProvider = async () => {
-      const provider =  new ethers.providers.Web3Provider(window.ethereum);
-      console.log(provider, "provider");
-      const signer = provider.getSigner();
-  
-      console.log(signer, "signer");
-      return new ethers.Contract(RockPaperScissorsContract, RockPaperScissorsContract.abi, signer);
-    }
-  
-    //open my metamask so that I can associate it to my account 
-    const requestAccount = async () => {
-       const account = await window.ethereum.request({ method: 'eth_requestAccounts' });
-       setAccount(account[0]);
-     }
+  //Setups up new Ethereum provider and returns an interface for interacting with the smart contract
+  const initializeProvider = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    console.log(provider, "provider");
+    const signer = provider.getSigner();
 
-     
+    console.log(signer, "signer");
+    return new ethers.Contract(RockPaperScissorsContractAddress, RockPaperScissorsContract.abi, signer);
+  }
 
-  
-  
+  //open my metamask so that I can associate it to my account 
+  const requestAccount = async () => {
+    const account = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    setAccount(account[0]);
+    console.log(account);
+  }
+
+
+
   const choices = ['Rock', 'Paper', 'Scissors'];
 
-  //const userBettingChoices = [1];
-
-  let updatedUserWinningsBalance = 0;
-
-  
-  
-  
-  
-  const handleOnClick = (choice) => {
-
-    if (userBet !== 0) {
+  const getValue = (myChoice) => {
+    if (myChoice == 0){
+      return 'rock';
+    } else if (myChoice == 1) {
+      return 'paper';
+    } else if (myChoice == 2) {
+      return 'scissors';
+    } 
+  }
 
 
-      console.log(choice + ' user choice');
-      setUserChoice(choice);
+  const handleOnClick = async (choice) => {
+
+    if (!userBet == 0) {
+
+      ///choice.preventDefault();
+      let myChoice = getValue(choice);
+
+      setUserChoice(myChoice);
+       
+      console.log(userChoice);
+
+      if (typeof window.ethereum !== 'undefined') {
+        const contract = await initializeProvider();
+        console.log(contract);
+
+        try {
+          const wei = parseEther(userBet);
+          //console.log(wei, "wei");
+          await contract.depositBet(account, choice, { value: wei, from: account });
+
+          // console.log(ss);
+          contract.on('Outcome', (account, computerMove, winnings) => {
+            let actualComputerMove = getValue(computerMove.toString());
+            setComputerChoice(actualComputerMove);
+            setUserWinnings(formatEther(winnings));
+            setGameOver(true);
+          });
 
 
-      //setComputerChoice(randomChoice);
-      setUserBet(0);
+        } catch (e) {
+          console.log("Error placing the bet", e);
+        }
 
+      } else {
 
-    
+        window.alert('Please place your bet first and only user a number');
 
-      setGameOver(true);
-
-    } else {
-
-      window.alert('Please place your bet first.');
-
+      }
     }
   }
 
-  
+      const reset = () => {
+        window.location.reload();
+
+      }
 
 
-  const reset = () => {
-    window.location.reload();
+      // on the first page request get request the account information
+      useEffect(() => {
+        requestAccount();
+      }, []);
 
-  }
+      useEffect(() => {
+
+      }, [account, computerChoice, userWinnings, gameOver]);
 
 
-    // on the first page request get request the account information
-    useEffect(() => {
-      requestAccount();
-    }, []);
-   
-    useEffect(() => {
-    
-    }, [account]);
 
- 
+      return (
+        <div className="App">
+          <h1 className='heading'> Rock, Paper, Scissors Betting Game</h1>
+          <div className='score'>
+          </div>
+          <div className='choices'>
+            <div className='choice-user'>
+              <img className='user-hand' src={`./images/${userChoice}.png`} />
+            </div>
+            <div className='choice-computer'>
+              <img className='computer-hand' src={`./images/${computerChoice}.png`} />
+            </div>
 
-  return (
-    <div className="App">
-      <h1 className='heading'> Rock, Paper, Scissors Betting Game</h1>
-      <div className='score'>
-      </div>
-      <div className='choices'>
-        <div className='choice-user'>
-          <img className='user-hand' src={`./images/${userChoice}.png`} />
-        </div>
-        <div className='choice-computer'>
-          <img className='computer-hand' src={`./images/${computerChoice}.png`} />
-        </div>
+          </div>
 
-      </div>
+          <div>
 
-      <div>
-        
             <label>Add your bet:
-             <input 
-              type="text" 
-               value={userBet}
-          onChange={(e) => setUserBet(e.target.value)}
-        />
-      </label>
-     
-      </div>
-      <br />
+              <input
+                type="text"
+                value={userBet}
+                onChange={(e) => setUserBet(e.target.value)}
+              />
+            </label>
 
-      <div children='button-div'>
-        {choices.map((choice, index) =>
-          <button className='button' key={index} onClick={() => handleOnClick(choice)}>
-            {choice}
-          </button>
-        )}
-      </div>
+          </div>
+          <br />
 
-      User's Winnings: 
+          <div children='button-div'>
+            {choices.map((choice, index) =>
+              <button className='button' key={index} onClick={() => handleOnClick(index)}>
+                {choice}
+              </button>
+            )}
+          </div>
 
-      <div className='button-div'>
-        {gameOver &&
-          <button className='button' onClick={() => reset()} > Restart Game?</button>
-        }
-      </div>
+          <h2> User's Winnings: {userWinnings} </h2>
+
+          <h1>You are connect to this wallet: {account}</h1>
+
+         
+
+          <div className='button-div'>
+            {gameOver &&
+              <button className='button' onClick={() => reset()} > Restart Game?</button>
+            }
+          </div>
 
 
-    </div>
+        </div>
 
-  );
+      );
 
-}
-export default App;
+    }
+    export default App;
 
 
 
@@ -238,4 +256,4 @@ export default App;
 //       </div>
 //     );
 //   }
-//}
+//
