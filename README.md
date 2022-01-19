@@ -32,7 +32,7 @@ The Rock, Paper, Scissors betting game is a game where you can bet crypto to cha
 1. Bet between -  .01 - .03 --> The higher the amount the increases the settlement time
 2. The game will respond to determine who won the hand 
 
-
+Demo Video: https://www.loom.com/share/a22a0d94cd1243fabda915a93482c846
  
 
 
