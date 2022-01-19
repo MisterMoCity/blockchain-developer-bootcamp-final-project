@@ -1,0 +1,7 @@
+Using Specific Compiler Pragma - The contract users ^0.8.0;
+
+Proper Use of Require, Assert and Revert - Mainly used to make sure the player can only make a bet against a contract that can cover pay the award. I also want to make sure the the contract is funded with link to make calls to the Oracle to request and get a random number
+
+Use Modifiers Only for Validation - Used to only allow the contract owner to withdrawn the smart contract balance
+
+Proper use of .call and .delegateCall - I use .call to store the players bet and distribute winning to game winner
