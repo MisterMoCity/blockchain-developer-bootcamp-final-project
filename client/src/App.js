@@ -6,76 +6,65 @@ import {parseEther, formatEther } from '@ethersproject/units';
 import RockPaperScissorsContract from "./contracts/RockPaperScissorsContract.json";
 
 function App() {
+
+const AuctionContractAddress = '0x683D2dd6cA20F8B015786Fd14e2333d052fa2DfA';
+const emptyAddress = '0x0000000000000000000000000000000000000000';
   
   
   const [userChoice, setUserChoice] = useState('rock');
   const [computerChoice, setComputerChoice] = useState('rock');
   const [userBet, setUserBet] = useState(0);
-
-
-
-  //pull from contact's state
-
-  const [userWinningsBalance, setUserWinningsBalance] = useState(0);
-
-  //Pull my balance from the address - dont display but dont allow to play game is no money is in the bank
-  const [computerBalance, setComputerBalance] = useState(0);
-  const [computerWinningsBalance, setComputerWinnginsBalance] = useState(0);
-
+  const [amount, setAmount] = useState(0);
+  const [userWinnings, setUserWinnings] = useState(0);
   const [result, setResult] = useState('Let\'s see who wins');
   const [gameOver, setGameOver] = useState(false);
+  const [account, setAccount] = useState('');
+
+
+    //Setups up new Ethereum provider and returns an interface for interacting with the smart contract
+    const initializeProvider = async () => {
+      const provider =  new ethers.providers.Web3Provider(window.ethereum);
+      console.log(provider, "provider");
+      const signer = provider.getSigner();
+  
+      console.log(signer, "signer");
+      return new ethers.Contract(RockPaperScissorsContract, RockPaperScissorsContract.abi, signer);
+    }
+  
+    //open my metamask so that I can associate it to my account 
+    const requestAccount = async () => {
+       const account = await window.ethereum.request({ method: 'eth_requestAccounts' });
+       setAccount(account[0]);
+     }
+
+     
 
   
   
   const choices = ['Rock', 'Paper', 'Scissors'];
 
-  const userBettingChoices = [1];
+  //const userBettingChoices = [1];
 
   let updatedUserWinningsBalance = 0;
 
+  
+  
+  
+  
   const handleOnClick = (choice) => {
 
     if (userBet !== 0) {
-
-      
-      
-
-
 
 
       console.log(choice + ' user choice');
       setUserChoice(choice);
 
-      const randomChoice = choices[Math.floor(Math.random() * choices.length)];
 
-      setComputerChoice(randomChoice);
+      //setComputerChoice(randomChoice);
       setUserBet(0);
 
 
-      const comboMoves = choice + randomChoice;
-
-      console.log(comboMoves + ' combo moves');
-
-      if (comboMoves === 'rockscissors' || comboMoves === 'paperrock' || comboMoves === 'scissorspaper') {
-        setResult('User Wins');
-        updatedUserWinningsBalance = userWinningsBalance + userBet;
-        setUserWinningsBalance(updatedUserWinningsBalance);
-
-        console.log('in here - user wins' + userWinningsBalance)
-
-      }
-
-      if (comboMoves === 'paperscissors' || comboMoves === 'scissorsrock' || comboMoves === 'rockpaper') {
-        setResult('House Wins');
-        let updatedComputerPoints = computerWinningsBalance + userBet;
-        setComputerWinnginsBalance(updatedComputerPoints);
-        console.log('in here - computer wins')
-
-      }
-      if (comboMoves === 'paperpaper' || comboMoves === 'scissorsscissors' || comboMoves === 'rockrock') {
-        setResult('It\'s a tie!');
-        console.log(' in here - A tie')
-      }
+    
 
       setGameOver(true);
 
@@ -86,12 +75,7 @@ function App() {
     }
   }
 
-  const handleOnClickBet = (theUserBet) => {
-
-    setUserBet(theUserBet);
-
-    console.log(theUserBet + ' User Bet')
-  }
+  
 
 
   const reset = () => {
@@ -100,32 +84,44 @@ function App() {
   }
 
 
+    // on the first page request get request the account information
+    useEffect(() => {
+      requestAccount();
+    }, []);
+   
+    useEffect(() => {
+    
+    }, [account]);
 
-
-  
+ 
 
   return (
     <div className="App">
       <h1 className='heading'> Rock, Paper, Scissors Betting Game</h1>
       <div className='score'>
-        <h1>User Winnings: ${userWinningsBalance} </h1>
-        <h1>House Winnings: ${computerWinningsBalance} </h1>
       </div>
       <div className='choices'>
         <div className='choice-user'>
-          <img className='user-hand' src={`../images/${userChoice}.png`} />
+          <img className='user-hand' src={`./images/${userChoice}.png`} />
         </div>
         <div className='choice-computer'>
-          <img className='computer-hand' src={`../images/${computerChoice}.png`} />
+          <img className='computer-hand' src={`./images/${computerChoice}.png`} />
         </div>
 
       </div>
 
       <div>
-        <h1>User's Bet: ${userBet}</h1>
+        
+            <label>Add your bet:
+             <input 
+              type="text" 
+               value={userBet}
+          onChange={(e) => setUserBet(e.target.value)}
+        />
+      </label>
+     
       </div>
-
-
+      <br />
 
       <div children='button-div'>
         {choices.map((choice, index) =>
@@ -135,27 +131,13 @@ function App() {
         )}
       </div>
 
-
-
-      <div children='button-div'>
-        {userBettingChoices.map((theUserBet, index) =>
-          <button className='button' key={index} onClick={() => handleOnClickBet(theUserBet)}>
-            ${theUserBet}
-          </button>
-        )}
-      </div>
-
-      <div className='result'>
-        <h1>Final Reuslt: {result}</h1>
-      </div>
+      User's Winnings: 
 
       <div className='button-div'>
         {gameOver &&
           <button className='button' onClick={() => reset()} > Restart Game?</button>
         }
       </div>
-
-
 
 
     </div>
