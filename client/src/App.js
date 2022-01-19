@@ -41,13 +41,13 @@ function App() {
   const choices = ['Rock', 'Paper', 'Scissors'];
 
   const getValue = (myChoice) => {
-    if (myChoice == 0){
+    if (myChoice == 0) {
       return 'rock';
     } else if (myChoice == 1) {
       return 'paper';
     } else if (myChoice == 2) {
       return 'scissors';
-    } 
+    }
   }
 
 
@@ -59,7 +59,7 @@ function App() {
       let myChoice = getValue(choice);
 
       setUserChoice(myChoice);
-       
+
       console.log(userChoice);
 
       if (typeof window.ethereum !== 'undefined') {
@@ -83,87 +83,93 @@ function App() {
         } catch (e) {
           console.log("Error placing the bet", e);
         }
-
-      } else {
-
-        window.alert('Please place your bet first and only user a number');
-
       }
+
+
+    } else {
+
+      window.alert('Please place your bet first and only user a number');
+
     }
+
   }
 
-      const reset = () => {
-        window.location.reload();
-
-      }
 
 
-      // on the first page request get request the account information
-      useEffect(() => {
-        requestAccount();
-      }, []);
+  const reset = () => {
+    window.location.reload();
 
-      useEffect(() => {
-
-      }, [account, computerChoice, userWinnings, gameOver]);
+  }
 
 
+  // on the first page request get request the account information
+  useEffect(() => {
+    requestAccount();
+  }, []);
 
-      return (
-        <div className="App">
-          <h1 className='heading'> Rock, Paper, Scissors Betting Game</h1>
-          <div className='score'>
-          </div>
-          <div className='choices'>
-            <div className='choice-user'>
-              <img className='user-hand' src={`./images/${userChoice}.png`} />
-            </div>
-            <div className='choice-computer'>
-              <img className='computer-hand' src={`./images/${computerChoice}.png`} />
-            </div>
+  useEffect(() => {
 
-          </div>
-
-          <div>
-
-            <label>Add your bet:
-              <input
-                type="text"
-                value={userBet}
-                onChange={(e) => setUserBet(e.target.value)}
-              />
-            </label>
-
-          </div>
-          <br />
-
-          <div children='button-div'>
-            {choices.map((choice, index) =>
-              <button className='button' key={index} onClick={() => handleOnClick(index)}>
-                {choice}
-              </button>
-            )}
-          </div>
-
-          <h2> User's Winnings: {userWinnings} </h2>
-
-          <h1>You are connect to this wallet: {account}</h1>
-
-         
-
-          <div className='button-div'>
-            {gameOver &&
-              <button className='button' onClick={() => reset()} > Restart Game?</button>
-            }
-          </div>
+  }, [account, computerChoice, userWinnings, gameOver]);
 
 
+
+  return (
+    <div className="App">
+      <h1 className='heading'> Rock, Paper, Scissors Betting Game</h1>
+      <div className='score'>
+      </div>
+
+      
+      <div className='choices'>
+        <div className='choice-user'>
+          <img className='user-hand' src={`./images/${userChoice}.png`} />
+        </div>
+        <div className='choice-computer'>
+          <img className='computer-hand' src={`./images/${computerChoice}.png`} />
         </div>
 
-      );
+      </div>
 
-    }
-    export default App;
+      <div>
+
+        <label>Add your bet:
+          <input
+            type="text"
+            value={userBet}
+            onChange={(e) => setUserBet(e.target.value)}
+          />
+        </label>
+
+      </div>
+      <br />
+
+      <div children='button-div'>
+        {choices.map((choice, index) =>
+          <button className='button' key={index} onClick={() => handleOnClick(index)}>
+            {choice}
+          </button>
+        )}
+      </div>
+
+      <h2> User's Winnings: {userWinnings} </h2>
+
+      <h1>You are connected to this wallet: {account}</h1>
+
+
+
+      <div className='button-div'>
+        {gameOver &&
+          <button className='button' onClick={() => reset()} > Restart Game?</button>
+        }
+      </div>
+
+
+    </div>
+
+  );
+
+}
+export default App;
 
 
 
