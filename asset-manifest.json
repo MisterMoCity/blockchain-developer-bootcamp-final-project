@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/blockchain-developer-bootcamp-final-project/client/static/css/main.073c9b0a.css",
-    "main.js": "/blockchain-developer-bootcamp-final-project/client/static/js/main.737d49ad.js",
-    "static/js/787.db9b214f.chunk.js": "/blockchain-developer-bootcamp-final-project/client/static/js/787.db9b214f.chunk.js",
-    "static/media/logo.svg": "/blockchain-developer-bootcamp-final-project/client/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
-    "index.html": "/blockchain-developer-bootcamp-final-project/client/index.html",
-    "main.073c9b0a.css.map": "/blockchain-developer-bootcamp-final-project/client/static/css/main.073c9b0a.css.map",
-    "main.737d49ad.js.map": "/blockchain-developer-bootcamp-final-project/client/static/js/main.737d49ad.js.map",
-    "787.db9b214f.chunk.js.map": "/blockchain-developer-bootcamp-final-project/client/static/js/787.db9b214f.chunk.js.map"
+    "main.css": "/blockchain-developer-bootcamp-final-project/static/css/main.073c9b0a.css",
+    "main.js": "/blockchain-developer-bootcamp-final-project/static/js/main.c91d7ddf.js",
+    "static/js/787.db9b214f.chunk.js": "/blockchain-developer-bootcamp-final-project/static/js/787.db9b214f.chunk.js",
+    "static/media/logo.svg": "/blockchain-developer-bootcamp-final-project/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/blockchain-developer-bootcamp-final-project/index.html",
+    "main.073c9b0a.css.map": "/blockchain-developer-bootcamp-final-project/static/css/main.073c9b0a.css.map",
+    "main.c91d7ddf.js.map": "/blockchain-developer-bootcamp-final-project/static/js/main.c91d7ddf.js.map",
+    "787.db9b214f.chunk.js.map": "/blockchain-developer-bootcamp-final-project/static/js/787.db9b214f.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.073c9b0a.css",
-    "static/js/main.737d49ad.js"
+    "static/js/main.c91d7ddf.js"
   ]
 }
