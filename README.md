@@ -27,7 +27,12 @@ The Rock, Paper, Scissors betting game is a game where you can bet crypto to cha
                 - The REACT frontend
                 
  ## How to access the game:
- 
+ https://mistermocity.github.io/blockchain-developer-bootcamp-final-project/
+
+1. Bet between -  .01 - .03 --> The higher the amount the increases the settlement time
+2. The game will respond to determine who won the hand 
+
+
  
 
 
