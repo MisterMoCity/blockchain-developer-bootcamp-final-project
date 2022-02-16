@@ -66,7 +66,7 @@ Demo Video: https://www.loom.com/share/a22a0d94cd1243fabda915a93482c846
                 const contract = "add your smart contract address";
      7. Run the truffle test - truffle test --network matic (all test should pass)
      8. Refund the contact with more test Matic (https://faucets.chain.link/mumbai)
-     9. Go to rpsdapp direction and npm start
+     9. Go to client directory and npm start
      10. Enjoy the same
 
   
